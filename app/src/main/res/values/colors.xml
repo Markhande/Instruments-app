@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Theme Colors -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Piano App Colors -->
+    <color name="background_dark">#FF1A1A1A</color>
+    <color name="control_panel_bg">#FF2D2D2D</color>
+    <color name="piano_background">#FF0F0F0F</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="text_secondary">#FFCCCCCC</color>
+    <color name="brand_text">#FFD4AF37</color>
+
+    <!-- Key Colors -->
+    <color name="white_key_bg">#FFFAFAFA</color>
+    <color name="white_key_pressed">#FFE0E0E0</color>
+    <color name="white_key_text">#FF333333</color>
+    <color name="white_key_border">#FFDDDDDD</color>
+
+    <color name="black_key_bg">#FF1C1C1C</color>
+    <color name="black_key_pressed">#FF404040</color>
+    <color name="black_key_text">#FFFFFFFF</color>
+    <color name="black_key_border">#FF000000</color>
+
+    <!-- Accent Colors -->
+    <color name="accent_color">#FF4CAF50</color>
+    <color name="accent_color_dark">#FF388E3C</color>
+
+    <!-- Button Colors -->
+    <color name="button_bg">#FF404040</color>
+    <color name="button_pressed">#FF606060</color>
+    <color name="button_border">#FF666666</color>
+</resources>

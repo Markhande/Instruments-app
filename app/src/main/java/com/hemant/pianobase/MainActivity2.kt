@@ -1,8 +1,12 @@
 package com.hemant.pianobase
 
 import android.content.pm.ActivityInfo
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.GestureDetector
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -36,8 +40,10 @@ class MainActivity2 : AppCompatActivity() {
     private val totalOctaves = 7
     private val whiteKeysPerOctave = 7
     private val whiteKeyPattern = arrayOf("C", "D", "E", "F", "G", "A", "B")
-    private val blackKeyPositions = arrayOf(1, 2, 4, 5, 6) // Positions where black keys appear
+    private val blackKeyPositions = arrayOf(1, 2, 4, 5, 6) // Positions where black keys appear (after C, D, F, G, A)
     private val blackKeyNames = arrayOf("C#", "D#", "F#", "G#", "A#")
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +62,6 @@ class MainActivity2 : AppCompatActivity() {
         setupNavigationSlider()
         setupSwipeGestures()
         lockHorizontalScrolling()
-        binding.pianoScrollView.setOnTouchListener { _, _ -> true }
     }
 
     private fun enableEdgeToEdge() {
@@ -88,20 +93,19 @@ class MainActivity2 : AppCompatActivity() {
         binding.blackKeysRow.removeAllViews()
 
         for (octave in 1..totalOctaves) {
-            for (i in 0 until whiteKeysPerOctave) {
-                if (blackKeyPositions.contains(i + 1)) {
-                    val blackKeyIndex = blackKeyPositions.indexOf(i + 1)
-                    val keyName = "${blackKeyNames[blackKeyIndex]}$octave"
-                    val blackKey = createBlackKey(keyName)
+            // Black keys pattern: C# D# _ F# G# A# _
+            // Positions: after C, D, skip E, after F, G, A, skip B
+            val blackKeyPattern = arrayOf(
+                "C#$octave", "D#$octave", null, "F#$octave", "G#$octave", "A#$octave", null
+            )
+
+            for (i in blackKeyPattern.indices) {
+                if (blackKeyPattern[i] != null) {
+                    val blackKey = createBlackKey(blackKeyPattern[i]!!)
                     binding.blackKeysRow.addView(blackKey)
                 } else {
-                    // Add spacer for positions without black keys
-                    val spacer = View(this)
-                    val layoutParams = LinearLayout.LayoutParams(
-                        (baseKeyWidth * currentZoom / 100).toInt(),
-                        0
-                    )
-                    spacer.layoutParams = layoutParams
+                    // Add spacer for E-F and B-C gaps
+                    val spacer = createBlackKeySpacer()
                     binding.blackKeysRow.addView(spacer)
                 }
             }
@@ -111,10 +115,16 @@ class MainActivity2 : AppCompatActivity() {
     private fun createWhiteKey(keyName: String): Button {
         val whiteKey = Button(this).apply {
             text = keyName
-            textSize = 12f
-            setTextColor(ContextCompat.getColor(context, R.color.white_key_text))
-            background = ContextCompat.getDrawable(context, R.drawable.white_key_bg)
+            textSize = 10f
+            setTextColor(Color.parseColor("#333333"))
+            gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+
+            // Create white key background programmatically
+            background = createWhiteKeyDrawable()
             elevation = 2f
+
+            // Add padding - text at bottom
+            setPadding(4, 4, 4, 20)
 
             setOnClickListener {
                 playNote(keyName)
@@ -126,7 +136,7 @@ class MainActivity2 : AppCompatActivity() {
             (baseKeyWidth * currentZoom / 100).toInt(),
             ViewGroup.LayoutParams.MATCH_PARENT
         ).apply {
-            marginEnd = 2
+            marginEnd = 1 // Minimal gap between keys
         }
 
         whiteKey.layoutParams = layoutParams
@@ -136,10 +146,16 @@ class MainActivity2 : AppCompatActivity() {
     private fun createBlackKey(keyName: String): Button {
         val blackKey = Button(this).apply {
             text = keyName
-            textSize = 10f
-            setTextColor(ContextCompat.getColor(context, R.color.black_key_text))
-            background = ContextCompat.getDrawable(context, R.drawable.black_key_bg)
-            elevation = 4f
+            textSize = 8f
+            setTextColor(Color.parseColor("#CCCCCC"))
+            gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+
+            // Create black key background programmatically
+            background = createBlackKeyDrawable()
+            elevation = 8f // Much higher elevation than white keys
+
+            // Add padding - text at bottom
+            setPadding(2, 2, 2, 12)
 
             setOnClickListener {
                 playNote(keyName)
@@ -147,16 +163,77 @@ class MainActivity2 : AppCompatActivity() {
             }
         }
 
+        val whiteKeyWidth = (baseKeyWidth * currentZoom / 100).toInt()
+        val blackKeyWidth = (whiteKeyWidth * 0.6f).toInt()
+        val blackKeyHeight = (baseKeyHeight * 0.6f * currentZoom / 100).toInt()
+
         val layoutParams = LinearLayout.LayoutParams(
-            (baseKeyWidth * 0.6f * currentZoom / 100).toInt(),
-            (baseKeyHeight * 0.6f * currentZoom / 100).toInt()
+            blackKeyWidth,
+            blackKeyHeight
         ).apply {
-            marginEnd = ((baseKeyWidth * 0.4f * currentZoom / 100).toInt())
-            marginStart = -((baseKeyWidth * 0.3f * currentZoom / 100).toInt())
+            // Position black key to be centered between white keys
+            val offsetWidth = (whiteKeyWidth - blackKeyWidth) / 2
+            marginStart = offsetWidth
+            marginEnd = offsetWidth + 1
         }
 
         blackKey.layoutParams = layoutParams
         return blackKey
+    }
+
+    private fun createBlackKeySpacer(): View {
+        val spacer = View(this)
+        val whiteKeyWidth = (baseKeyWidth * currentZoom / 100).toInt()
+        val layoutParams = LinearLayout.LayoutParams(
+            whiteKeyWidth,
+            0
+        ).apply {
+            marginEnd = 1
+        }
+        spacer.layoutParams = layoutParams
+        return spacer
+    }
+
+    private fun createWhiteKeyDrawable(): Drawable {
+        val shape = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            colors = intArrayOf(
+                Color.parseColor("#FFFFFF"),
+                Color.parseColor("#F5F5F5"),
+                Color.parseColor("#EEEEEE")
+            )
+            gradientType = GradientDrawable.LINEAR_GRADIENT
+            orientation = GradientDrawable.Orientation.TOP_BOTTOM
+
+            // Add subtle border
+            setStroke(1, Color.parseColor("#DDDDDD"))
+
+            // Sharp corners like real piano
+            cornerRadius = 0f
+        }
+
+        return shape
+    }
+
+    private fun createBlackKeyDrawable(): Drawable {
+        val shape = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            colors = intArrayOf(
+                Color.parseColor("#333333"),
+                Color.parseColor("#1A1A1A"),
+                Color.parseColor("#000000")
+            )
+            gradientType = GradientDrawable.LINEAR_GRADIENT
+            orientation = GradientDrawable.Orientation.TOP_BOTTOM
+
+            // Add subtle border
+            setStroke(1, Color.parseColor("#555555"))
+
+            // Slightly rounded corners for black keys
+            cornerRadius = 3f
+        }
+
+        return shape
     }
 
     private fun setupZoomControls() {
@@ -245,12 +322,10 @@ class MainActivity2 : AppCompatActivity() {
     }
 
     private fun onSwipeLeft() {
-        // Swipe left - trigger previous key relative to current view
         triggerKeyFromSwipe(false)
     }
 
     private fun onSwipeRight() {
-        // Swipe right - trigger next key relative to current view
         triggerKeyFromSwipe(true)
     }
 
@@ -299,10 +374,6 @@ class MainActivity2 : AppCompatActivity() {
         }
     }
 
-    private fun showToast(message: String) {
-        android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show()
-    }
-
     private fun scrollToPosition(progress: Int) {
         val maxScroll = getMaxScrollX()
         val scrollX = (progress / 100f * maxScroll).toInt()
@@ -331,23 +402,29 @@ class MainActivity2 : AppCompatActivity() {
             whiteKey.layoutParams = layoutParams
         }
 
-        // Update black keys
+        // Update black keys and spacers
         for (i in 0 until binding.blackKeysRow.childCount) {
-            val blackKey = binding.blackKeysRow.getChildAt(i)
-            val layoutParams = blackKey.layoutParams as LinearLayout.LayoutParams
+            val blackKeyView = binding.blackKeysRow.getChildAt(i)
+            val layoutParams = blackKeyView.layoutParams as LinearLayout.LayoutParams
+            val whiteKeyWidth = (baseKeyWidth * currentZoom / 100).toInt()
 
-            if (blackKey is Button) {
+            if (blackKeyView is Button) {
                 // It's a black key
-                layoutParams.width = (baseKeyWidth * 0.6f * currentZoom / 100).toInt()
-                layoutParams.height = (baseKeyHeight * 0.6f * currentZoom / 100).toInt()
-                layoutParams.marginEnd = ((baseKeyWidth * 0.4f * currentZoom / 100).toInt())
-                layoutParams.marginStart = -((baseKeyWidth * 0.3f * currentZoom / 100).toInt())
+                val blackKeyWidth = (whiteKeyWidth * 0.6f).toInt()
+                val blackKeyHeight = (baseKeyHeight * 0.6f * currentZoom / 100).toInt()
+                val offsetWidth = (whiteKeyWidth - blackKeyWidth) / 2
+
+                layoutParams.width = blackKeyWidth
+                layoutParams.height = blackKeyHeight
+                layoutParams.marginStart = offsetWidth
+                layoutParams.marginEnd = offsetWidth + 1
             } else {
                 // It's a spacer
-                layoutParams.width = (baseKeyWidth * currentZoom / 100).toInt()
+                layoutParams.width = whiteKeyWidth
+                layoutParams.marginEnd = 1
             }
 
-            blackKey.layoutParams = layoutParams
+            blackKeyView.layoutParams = layoutParams
         }
     }
 
@@ -357,23 +434,44 @@ class MainActivity2 : AppCompatActivity() {
 
     private fun playNote(keyName: String) {
         // TODO: Implement actual sound playback
-        // For now, just show feedback in logs
         println("Playing note: $keyName")
+
+        // Show visual feedback
+        showToast("Playing: $keyName")
+    }
+
+    private fun showToast(message: String) {
+        android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show()
     }
 
     private fun animateKeyPress(key: Button, isWhiteKey: Boolean) {
-        // Simple press animation
+        // Different animation for white and black keys
+        val scaleAmount = if (isWhiteKey) 0.96f else 0.92f
+
         key.animate()
-            .scaleX(0.95f)
-            .scaleY(0.95f)
-            .setDuration(100)
+            .scaleX(scaleAmount)
+            .scaleY(scaleAmount)
+            .setDuration(80)
             .withEndAction {
                 key.animate()
                     .scaleX(1f)
                     .scaleY(1f)
-                    .setDuration(100)
+                    .setDuration(80)
                     .start()
             }
             .start()
+
+        // Add a subtle color change during press
+        if (isWhiteKey) {
+            key.setBackgroundColor(Color.parseColor("#E8E8E8"))
+            key.postDelayed({
+                key.background = createWhiteKeyDrawable()
+            }, 120)
+        } else {
+            key.setBackgroundColor(Color.parseColor("#444444"))
+            key.postDelayed({
+                key.background = createBlackKeyDrawable()
+            }, 120)
+        }
     }
 }

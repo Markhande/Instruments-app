@@ -73,6 +73,7 @@
                 android:fontFamily="sans-serif-medium" />
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/zoomOutBtn"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -94,6 +95,7 @@
                 android:thumbTint="@color/accent_color" />
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/zoomInBtn"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -121,7 +123,7 @@
         android:id="@+id/pianoContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/piano_background"
+        android:background="#1a1a1a"
         app:layout_constraintTop_toBottomOf="@id/controlPanel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -134,41 +136,38 @@
             android:layout_height="match_parent"
             android:scrollbars="none"
             android:fadeScrollbars="false"
-            android:background="@color/piano_background">
+            android:background="#1a1a1a">
 
-            <!-- Piano Keys Container -->
-            <RelativeLayout
+            <!-- Piano Keys Container - Using FrameLayout for proper layering -->
+            <FrameLayout
                 android:id="@+id/pianoKeysContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@color/piano_background">
+                android:background="#1a1a1a">
 
-                <!-- White Keys Row -->
+                <!-- White Keys Row (Bottom Layer) -->
                 <LinearLayout
                     android:id="@+id/whiteKeysRow"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:layout_alignParentBottom="true">
-
+                    android:layout_gravity="bottom"
+                    android:background="#1a1a1a">
                     <!-- White keys will be added programmatically -->
-
                 </LinearLayout>
 
-                <!-- Black Keys Row -->
+                <!-- Black Keys Row (Top Layer) -->
                 <LinearLayout
                     android:id="@+id/blackKeysRow"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_above="@id/whiteKeysRow"
-                    android:layout_marginBottom="0dp"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="20dp">
-
+                    android:layout_gravity="top"
+                    android:layout_marginTop="0dp">
                     <!-- Black keys will be added programmatically -->
                 </LinearLayout>
-            </RelativeLayout>
+
+            </FrameLayout>
         </HorizontalScrollView>
 
         <!-- Piano Brand/Logo -->
@@ -176,11 +175,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Digital Piano"
-            android:textColor="@color/brand_text"
+            android:textColor="#888888"
             android:textSize="16sp"
             android:fontFamily="serif"
             android:layout_gravity="top|center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="60dp"
             android:alpha="0.7" />
     </FrameLayout>
 

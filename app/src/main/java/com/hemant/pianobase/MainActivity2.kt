@@ -14,7 +14,6 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -35,6 +34,8 @@ class MainActivity2 : AppCompatActivity() {
     private val swipeThreshold = 100
     private val swipeVelocityThreshold = 100
     private var isScrollLocked = true // Lock horizontal scrolling
+
+    private var hide = true
 
     // Piano configuration
     private val totalOctaves = 7
@@ -62,6 +63,23 @@ class MainActivity2 : AppCompatActivity() {
         setupNavigationSlider()
         setupSwipeGestures()
         lockHorizontalScrolling()
+
+        binding.layoutShowHide.setOnClickListener {
+            if (hide){
+                binding.navigationSlider.visibility = View.GONE
+                binding.zoomControlLayout.visibility = View.GONE
+                binding.navigationSliderLayout.visibility = View.GONE
+                binding.layoutShowHide.setBackgroundResource(R.drawable.ic_arrow_down)
+                hide = !hide
+            }else{
+                binding.navigationSlider.visibility = View.VISIBLE
+                binding.zoomControlLayout.visibility = View.VISIBLE
+                binding.navigationSliderLayout.visibility = View.VISIBLE
+                binding.layoutShowHide.setBackgroundResource(R.drawable.ic_arrow_up)
+                hide = !hide
+            }
+        }
+        binding.pianoScrollView.setOnTouchListener({ v, event -> true })
     }
 
     private fun enableEdgeToEdge() {
@@ -126,9 +144,15 @@ class MainActivity2 : AppCompatActivity() {
             // Add padding - text at bottom
             setPadding(4, 4, 4, 20)
 
-            setOnClickListener {
-                playNote(keyName)
-                animateKeyPress(this, true)
+            setOnTouchListener { v, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        playNote(keyName)
+                        animateKeyPress(this, true)
+                        true
+                    }
+                    else -> false
+                }
             }
         }
 
@@ -157,13 +181,19 @@ class MainActivity2 : AppCompatActivity() {
             // Add padding - text at bottom
             setPadding(2, 2, 2, 12)
 
-            setOnClickListener {
-                playNote(keyName)
-                animateKeyPress(this, false)
+            setOnTouchListener { v, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        playNote(keyName)
+                        animateKeyPress(this, false)
+                        true
+                    }
+                    else -> false
+                }
             }
         }
 
-        val whiteKeyWidth = (baseKeyWidth * currentZoom / 100).toInt()
+        val whiteKeyWidth = (baseKeyWidth * currentZoom / 10/0).toInt()
         val blackKeyWidth = (whiteKeyWidth * 0.6f).toInt()
         val blackKeyHeight = (baseKeyHeight * 0.6f * currentZoom / 100).toInt()
 
@@ -326,7 +356,7 @@ class MainActivity2 : AppCompatActivity() {
     }
 
     private fun onSwipeRight() {
-        triggerKeyFromSwipe(true)
+        triggerKeyFromSwipe(false)
     }
 
     private fun triggerKeyFromSwipe(isNext: Boolean) {

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/background_dark</item>
+        <item name="android:statusBarColor">@color/background_dark</item>
+        <item name="android:navigationBarColor">@color/background_dark</item>
+    </style>
+
+    <!-- Piano Key Styles -->
+    <style name="WhiteKeyStyle">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginStart">1dp</item>
+        <item name="android:layout_marginEnd">1dp</item>
+        <item name="android:background">@drawable/white_key_background</item>
+        <item name="android:textColor">@color/text_on_white_key</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">bottom|center_horizontal</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+    <style name="BlackKeyStyle">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">200dp</item>
+        <item name="android:background">@drawable/black_key_background</item>
+        <item name="android:textColor">@color/text_on_black_key</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:gravity">bottom|center_horizontal</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <!-- Control Button Styles -->
+    <style name="CircularButtonStyle">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@drawable/circular_button_background</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <style name="PrimaryButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textColor">@color/text_on_button</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+    <!-- Text Styles -->
+    <style name="HeaderTextStyle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CurrentNoteTextStyle">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
+
+    <style name="LabelTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="ValueTextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- SeekBar Style -->
+    <style name="CustomSeekBarStyle">
+        <item name="android:progressTint">@color/accent_color</item>
+        <item name="android:thumbTint">@color/accent_color</item>
+        <item name="android:progressBackgroundTint">@color/text_secondary</item>
+    </style>
+
+    <!-- Switch Style -->
+    <style name="CustomSwitchStyle">
+        <item name="android:trackTint">@color/switch_track</item>
+        <item name="android:thumbTint">@color/switch_thumb</item>
+    </style>
+
+    <!-- Spinner Style -->
+    <style name="CustomSpinnerStyle">
+        <item name="android:background">@drawable/spinner_background</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+</resources>

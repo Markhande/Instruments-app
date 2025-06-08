@@ -38,4 +38,62 @@
     <color name="button_bg">#FF404040</color>
     <color name="button_pressed">#FF606060</color>
     <color name="button_border">#FF666666</color>
+
+    <!-- Piano Top Section Colors -->
+    <color name="piano_top_section">#FF1A1A1A</color>
+    <color name="piano_top_highlight">#FF2A2A2A</color>
+    <color name="piano_top_border">#FF333333</color>
+
+    <!-- Piano Control Buttons -->
+    <color name="piano_button_bg">#FF2C2C2C</color>
+    <color name="piano_button_pressed">#FF404040</color>
+    <color name="piano_button_highlight">#FF3C3C3C</color>
+    <color name="piano_button_border">#FF444444</color>
+    <color name="piano_button_text">#FFFFFFFF</color>
+
+    <!-- Music Stand -->
+    <color name="music_stand_bg">#FF0A0A0A</color>
+    <color name="music_stand_highlight">#FF1A1A1A</color>
+    <color name="music_stand_border">#FF333333</color>
+
+    <!-- Main Theme Colors -->
+    <color name="colorPrimary">#3700B3</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <!-- Background Colors -->
+    <color name="header_background">#1F1F1F</color>
+    <color name="note_display_background">#2C2C2C</color>
+    <color name="controls_background">#1F1F1F</color>
+
+    <!-- Text Colors -->
+    <color name="text_on_white_key">#333333</color>
+    <color name="text_on_black_key">#FFFFFF</color>
+    <color name="text_on_button">#FFFFFF</color>
+
+    <!-- Piano Key Colors -->
+    <color name="white_key_default">#FFFFFF</color>
+    <color name="white_key_pressed_border">#CCCCCC</color>
+
+    <color name="black_key_default">#1C1C1C</color>
+    <color name="accent_color_pressed">#7C4DFF</color>
+    <color name="scale_highlight">#FF9800</color>
+    <color name="chord_highlight">#4CAF50</color>
+
+    <!-- UI Component Colors -->
+    <color name="seekbar_progress">#6200EA</color>
+    <color name="seekbar_thumb">#6200EA</color>
+    <color name="switch_track">#424242</color>
+    <color name="switch_thumb">#6200EA</color>
+
+    <!-- Status Colors -->
+    <color name="recording_active">#F44336</color>
+    <color name="playing_active">#4CAF50</color>
+    <color name="metronome_active">#FF9800</color>
+
+    <!-- Transparent Colors -->
+    <color name="transparent">#00000000</color>
+    <color name="semi_transparent_black">#80000000</color>
+    <color name="semi_transparent_white">#80FFFFFF</color>
+
 </resources>

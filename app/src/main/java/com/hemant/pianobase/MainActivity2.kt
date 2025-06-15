@@ -4,6 +4,8 @@ import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.media.AudioAttributes
+import android.media.SoundPool
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.Gravity
@@ -44,7 +46,8 @@ class MainActivity2 : AppCompatActivity() {
     private val blackKeyPositions = arrayOf(1, 2, 4, 5, 6) // Positions where black keys appear (after C, D, F, G, A)
     private val blackKeyNames = arrayOf("C#", "D#", "F#", "G#", "A#")
 
-
+    private lateinit var soundPool: SoundPool
+    private val soundMap = mutableMapOf<String, Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +60,32 @@ class MainActivity2 : AppCompatActivity() {
 
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_GAME)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
+
+        soundPool = SoundPool.Builder()
+            .setMaxStreams(10) // Max number of simultaneous notes
+            .setAudioAttributes(audioAttributes)
+            .build()
+
+        // Load sounds into SoundPool and store the IDs
+        soundMap["one"] = soundPool.load(this, R.raw.one, 1)
+        soundMap["two"] = soundPool.load(this, R.raw.two, 1)
+        soundMap["three"] = soundPool.load(this, R.raw.three, 1)
+        soundMap["four"] = soundPool.load(this, R.raw.four, 1)
+        soundMap["five"] = soundPool.load(this, R.raw.five, 1)
+        soundMap["six"] = soundPool.load(this, R.raw.six, 1)
+        soundMap["seven"] = soundPool.load(this, R.raw.seven, 1)
+        soundMap["eight"] = soundPool.load(this, R.raw.eight, 1)
+        soundMap["nine"] = soundPool.load(this, R.raw.nine, 1)
+        soundMap["ten"] = soundPool.load(this, R.raw.ten, 1)
+        soundMap["eleven"] = soundPool.load(this, R.raw.eleven, 1)
+        soundMap["twelve"] = soundPool.load(this, R.raw.twelve, 1)
+        soundMap["thirteen"] = soundPool.load(this, R.raw.thirteen, 1)
+        soundMap["fourteen"] = soundPool.load(this, R.raw.fourteen, 1)
 
         setupPianoKeys()
         setupZoomControls()
@@ -463,10 +492,26 @@ class MainActivity2 : AppCompatActivity() {
     }
 
     private fun playNote(keyName: String) {
-        // TODO: Implement actual sound playback
         println("Playing note: $keyName")
 
         // Show visual feedback
+        //playSoundEffect("one")
+        when(keyName){
+            "C1" -> playSoundEffect("one")
+            "C#1" -> playSoundEffect("two")
+            "D1" -> playSoundEffect("three")
+            "D#1" -> playSoundEffect("four")
+            "E1" -> playSoundEffect("five")
+            "F1" -> playSoundEffect("six")
+            "F#1" -> playSoundEffect("seven")
+            "G1" -> playSoundEffect("eight")
+            "G#1" -> playSoundEffect("nine")
+            "A1" -> playSoundEffect("ten")
+            "A#1" -> playSoundEffect("eleven")
+            "B1" -> playSoundEffect("thirteen")
+            "C2" -> playSoundEffect("fourteen")
+        }
+
         showToast("Playing: $keyName")
     }
 
@@ -502,6 +547,12 @@ class MainActivity2 : AppCompatActivity() {
             key.postDelayed({
                 key.background = createBlackKeyDrawable()
             }, 120)
+        }
+    }
+
+    private fun playSoundEffect(name: String) {
+        soundMap[name]?.let { soundId ->
+            soundPool.play(soundId, 1f, 1f, 0, 0, 1f)
         }
     }
 }

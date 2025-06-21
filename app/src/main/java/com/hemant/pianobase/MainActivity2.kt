@@ -20,6 +20,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.hemant.pianobase.databinding.ActivityMain2Binding
+import kotlin.collections.set
 import kotlin.math.abs
 
 class MainActivity2 : AppCompatActivity() {
@@ -82,10 +83,16 @@ class MainActivity2 : AppCompatActivity() {
         soundMap["eight"] = soundPool.load(this, R.raw.eight, 1)
         soundMap["nine"] = soundPool.load(this, R.raw.nine, 1)
         soundMap["ten"] = soundPool.load(this, R.raw.ten, 1)
-        soundMap["eleven"] = soundPool.load(this, R.raw.eleven, 1)
-        soundMap["twelve"] = soundPool.load(this, R.raw.twelve, 1)
+        soundMap["eleven"] = soundPool.load(this, R.raw.eleveen, 1)
+        soundMap["twelve"] = soundPool.load(this, R.raw.tweel, 1)
         soundMap["thirteen"] = soundPool.load(this, R.raw.thirteen, 1)
         soundMap["fourteen"] = soundPool.load(this, R.raw.fourteen, 1)
+        soundMap["fifteen"] = soundPool.load(this, R.raw.fifteen, 1)
+        soundMap["sixteen"] = soundPool.load(this, R.raw.sixteen, 1)
+        soundMap["seventeen"] = soundPool.load(this, R.raw.seventeen, 1)
+        soundMap["eightteen"] = soundPool.load(this, R.raw.eighteen, 1)
+        soundMap["nineteen"] = soundPool.load(this, R.raw.nineteen, 1)
+        soundMap["twenty"] = soundPool.load(this, R.raw.twenty, 1)
 
         setupPianoKeys()
         setupZoomControls()
@@ -510,6 +517,13 @@ class MainActivity2 : AppCompatActivity() {
             "A#1" -> playSoundEffect("eleven")
             "B1" -> playSoundEffect("thirteen")
             "C2" -> playSoundEffect("fourteen")
+            "C#2"-> playSoundEffect("fifteen")
+            "D2"-> playSoundEffect("sixteen")
+            "D#2" -> playSoundEffect("sixteen")
+            "E2" -> playSoundEffect("seventeen")
+            "F2" -> playSoundEffect("eightteen")
+            "F#2" -> playSoundEffect("nineteen")
+            "G2" -> playSoundEffect("twenty")
         }
 
         showToast("Playing: $keyName")
